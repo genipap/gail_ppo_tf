@@ -12,10 +12,10 @@ def argparser():
     parser.add_argument('--savedir', help='name of directory to save model', default='trained_models/carla_bc')
     parser.add_argument('--max_to_keep', help='number of models to save', default=50, type=int)
     parser.add_argument('--logdir', help='log directory', default='carla_log/train/bc')
-    parser.add_argument('--iteration', default=int(1e4), type=int)
+    parser.add_argument('--iteration', default=int(1e6), type=int)
     parser.add_argument('--interval', help='save interval', default=int(5*1e2), type=int)
     parser.add_argument('--minibatch_size', default=128, type=int)
-    parser.add_argument('--epoch_num', default=50, type=int)
+    parser.add_argument('--epoch_num', default=100, type=int)
     return parser.parse_args()
 
 
