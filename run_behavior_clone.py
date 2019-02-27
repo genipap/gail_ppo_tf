@@ -4,17 +4,19 @@ import numpy as np
 import tensorflow as tf
 from network_models.policy_net import Policy_net
 from algo.behavior_clone import BehavioralCloning
+import tqdm
+from sklearn.preprocessing import normalize
 
 
 def argparser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--savedir', help='name of directory to save model', default='trained_models/carla_bc')
     parser.add_argument('--max_to_keep', help='number of models to save', default=50, type=int)
-    parser.add_argument('--logdir', help='log directory', default='log/train/bc')
-    parser.add_argument('--iteration', default=int(1e6), type=int)
-    parser.add_argument('--interval', help='save interval', default=int(1e2), type=int)
+    parser.add_argument('--logdir', help='log directory', default='carla_log/train/bc')
+    parser.add_argument('--iteration', default=int(1e4), type=int)
+    parser.add_argument('--interval', help='save interval', default=int(5*1e2), type=int)
     parser.add_argument('--minibatch_size', default=128, type=int)
-    parser.add_argument('--epoch_num', default=100, type=int)
+    parser.add_argument('--epoch_num', default=50, type=int)
     return parser.parse_args()
 
 
@@ -33,6 +35,7 @@ def main(args):
 
     # observations = np.genfromtxt('trajectory/observations.csv')
     observations = np.genfromtxt('expert_traj/observations.csv')
+    observations = normalize(observations, axis=1, norm='l1')
     # actions = np.genfromtxt('trajectory/actions.csv', dtype=np.int32)
     actions = np.genfromtxt('expert_traj/actions.csv', dtype=np.int32)
     actions = actions[:, 0]
@@ -43,7 +46,7 @@ def main(args):
 
         inp = [observations, actions]
 
-        for iteration in range(args.iteration):  # episode
+        for iteration in tqdm.tqdm(range(args.iteration)):  # episode
 
             # train
             for epoch in range(args.epoch_num):

@@ -13,7 +13,7 @@ class BehavioralCloning:
         loss = - tf.reduce_mean(loss)
         tf.summary.scalar('loss/cross_entropy', loss)
 
-        optimizer = tf.train.AdamOptimizer()
+        optimizer = tf.train.AdamOptimizer(learning_rate=0.0005)
         self.train_op = optimizer.minimize(loss)
 
         self.merged = tf.summary.merge_all()
