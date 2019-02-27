@@ -1,5 +1,4 @@
 import argparse
-import gym
 import numpy as np
 import tensorflow as tf
 from network_models.policy_net import Policy_net
@@ -27,7 +26,6 @@ class Env():
 
 
 def main(args):
-    # env = gym.make('CartPole-v0')
     env = Env()
     Policy = Policy_net('policy', env)
     BC = BehavioralCloning(Policy)
@@ -40,7 +38,7 @@ def main(args):
     actions = np.genfromtxt('expert_traj/actions.csv', dtype=np.int32)
     actions = actions[:, 0]
 
-    with tf.Session() as sess:
+    with tf.Session(config=tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)) as sess:
         writer = tf.summary.FileWriter(args.logdir, sess.graph)
         sess.run(tf.global_variables_initializer())
 
