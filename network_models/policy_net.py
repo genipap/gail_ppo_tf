@@ -12,13 +12,14 @@ class Policy_net:
         act_space = env.action_space
 
         with tf.variable_scope(name):
-            self.obs = tf.placeholder(dtype=tf.float32, shape=[None] + list(ob_space.shape), name='obs')
+            # print([None] + list(ob_space.shape), act_space.n)
+            self.obs = tf.placeholder(dtype=tf.float32, shape=[None] + list([21]), name='obs')
 
             with tf.variable_scope('policy_net'):
-                layer_1 = tf.layers.dense(inputs=self.obs, units=20, activation=tf.tanh)
-                layer_2 = tf.layers.dense(inputs=layer_1, units=20, activation=tf.tanh)
-                layer_3 = tf.layers.dense(inputs=layer_2, units=act_space.n, activation=tf.tanh)
-                self.act_probs = tf.layers.dense(inputs=layer_3, units=act_space.n, activation=tf.nn.softmax)
+                layer_1 = tf.layers.dense(inputs=self.obs, units=128, activation=tf.tanh)
+                layer_2 = tf.layers.dense(inputs=layer_1, units=128, activation=tf.tanh)
+                layer_3 = tf.layers.dense(inputs=layer_2, units=2, activation=tf.tanh)
+                self.act_probs = tf.layers.dense(inputs=layer_3, units=2, activation=tf.nn.softmax)
 
             with tf.variable_scope('value_net'):
                 layer_1 = tf.layers.dense(inputs=self.obs, units=20, activation=tf.tanh)

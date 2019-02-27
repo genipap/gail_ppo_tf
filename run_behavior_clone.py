@@ -8,24 +8,34 @@ from algo.behavior_clone import BehavioralCloning
 
 def argparser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--savedir', help='name of directory to save model', default='trained_models/bc')
-    parser.add_argument('--max_to_keep', help='number of models to save', default=10, type=int)
+    parser.add_argument('--savedir', help='name of directory to save model', default='trained_models/carla_bc')
+    parser.add_argument('--max_to_keep', help='number of models to save', default=50, type=int)
     parser.add_argument('--logdir', help='log directory', default='log/train/bc')
-    parser.add_argument('--iteration', default=int(1e3), type=int)
+    parser.add_argument('--iteration', default=int(1e6), type=int)
     parser.add_argument('--interval', help='save interval', default=int(1e2), type=int)
     parser.add_argument('--minibatch_size', default=128, type=int)
-    parser.add_argument('--epoch_num', default=10, type=int)
+    parser.add_argument('--epoch_num', default=100, type=int)
     return parser.parse_args()
 
 
+class Env():
+    def __init__(self):
+        self.observation_space = (18, )
+        self.action_space = 2
+
+
 def main(args):
-    env = gym.make('CartPole-v0')
+    # env = gym.make('CartPole-v0')
+    env = Env()
     Policy = Policy_net('policy', env)
     BC = BehavioralCloning(Policy)
     saver = tf.train.Saver(max_to_keep=args.max_to_keep)
 
-    observations = np.genfromtxt('trajectory/observations.csv')
-    actions = np.genfromtxt('trajectory/actions.csv', dtype=np.int32)
+    # observations = np.genfromtxt('trajectory/observations.csv')
+    observations = np.genfromtxt('expert_traj/observations.csv')
+    # actions = np.genfromtxt('trajectory/actions.csv', dtype=np.int32)
+    actions = np.genfromtxt('expert_traj/actions.csv', dtype=np.int32)
+    actions = actions[:, 0]
 
     with tf.Session() as sess:
         writer = tf.summary.FileWriter(args.logdir, sess.graph)
