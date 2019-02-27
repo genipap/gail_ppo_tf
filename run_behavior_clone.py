@@ -15,13 +15,13 @@ def argparser():
     parser.add_argument('--iteration', default=int(1e6), type=int)
     parser.add_argument('--interval', help='save interval', default=int(5*1e2), type=int)
     parser.add_argument('--minibatch_size', default=128, type=int)
-    parser.add_argument('--epoch_num', default=100, type=int)
+    parser.add_argument('--epoch_num', default=50, type=int)
     return parser.parse_args()
 
 
 class Env():
     def __init__(self):
-        self.observation_space = (18, )
+        self.observation_space = (21, )
         self.action_space = 2
 
 
@@ -38,7 +38,7 @@ def main(args):
     actions = np.genfromtxt('expert_traj/actions.csv', dtype=np.int32)
     actions = actions[:, 0]
 
-    with tf.Session(config=tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)) as sess:
+    with tf.Session(config=tf.ConfigProto(allow_soft_placement=True, log_device_placement=False)) as sess:
         writer = tf.summary.FileWriter(args.logdir, sess.graph)
         sess.run(tf.global_variables_initializer())
 
