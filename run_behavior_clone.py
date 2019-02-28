@@ -38,7 +38,7 @@ def main(args):
         writer = tf.summary.FileWriter(args.logdir, sess.graph)
         sess.run(tf.global_variables_initializer())
 
-        inp = [observations, actions]
+        inp = [observations, aa]
 
         for iteration in tqdm.tqdm(range(args.iteration)):  # episode
 
