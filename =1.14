@@ -1,0 +1,38 @@
+Solving environment: ...working... done
+
+## Package Plan ##
+
+  environment location: /home/zhiqianq/anaconda3/envs/gail
+
+  added / updated specs: 
+    - tensorflow
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    tensorflow-1.10.0          |           py36_0        50.4 MB  conda-forge
+    tensorboard-1.10.0         |           py36_0         3.3 MB  conda-forge
+    certifi-2018.11.29         |        py36_1000         145 KB  conda-forge
+    openssl-1.1.1a             |    h14c3975_1000         4.0 MB  conda-forge
+    ------------------------------------------------------------
+                                           Total:        57.8 MB
+
+The following packages will be UPDATED:
+
+    certifi:         2018.11.29-py36_0         --> 2018.11.29-py36_1000  conda-forge
+
+The following packages will be DOWNGRADED:
+
+    ca-certificates: 2019.1.23-0               --> 2018.11.29-ha4d7672_0 conda-forge
+    openssl:         1.1.1b-h7b6447c_0         --> 1.1.1a-h14c3975_1000  conda-forge
+    tensorboard:     1.12.2-py36he6710b0_0     --> 1.10.0-py36_0         conda-forge
+    tensorflow:      1.12.0-mkl_py36h69b6ba0_0 --> 1.10.0-py36_0         conda-forge
+
+Proceed ([y]/n)? 
+
+Downloading and Extracting Packages
+Preparing transaction: ...working... done
+Verifying transaction: ...working... done
+Executing transaction: ...working... done
