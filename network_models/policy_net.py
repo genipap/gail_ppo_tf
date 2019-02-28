@@ -2,24 +2,22 @@ import tensorflow as tf
 
 
 class Policy_net:
-    def __init__(self, name: str, env):
+    def __init__(self, name: str):
         """
         :param name: string
         :param env: gym env
         """
-
-        ob_space = env.observation_space
-        act_space = env.action_space
+        s_space = 21
+        a_space = 3
 
         with tf.variable_scope(name):
-            # print([None] + list(ob_space.shape), act_space.n)
-            self.obs = tf.placeholder(dtype=tf.float32, shape=[None] + list([21]), name='obs')
+            self.obs = tf.placeholder(dtype=tf.float32, shape=[None] + list([s_space]), name='obs')
 
             with tf.variable_scope('policy_net'):
                 layer_1 = tf.layers.dense(inputs=self.obs, units=128, activation=tf.tanh)
                 layer_2 = tf.layers.dense(inputs=layer_1, units=128, activation=tf.tanh)
-                layer_3 = tf.layers.dense(inputs=layer_2, units=2, activation=tf.tanh)
-                self.act_probs = tf.layers.dense(inputs=layer_3, units=2, activation=tf.nn.softmax)
+                layer_3 = tf.layers.dense(inputs=layer_2, units=a_space, activation=tf.tanh)
+                self.act_probs = tf.layers.dense(inputs=layer_3, units=a_space, activation=tf.nn.softmax)
 
             with tf.variable_scope('value_net'):
                 layer_1 = tf.layers.dense(inputs=self.obs, units=20, activation=tf.tanh)

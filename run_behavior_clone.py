@@ -12,31 +12,27 @@ def argparser():
     parser.add_argument('--savedir', help='name of directory to save model', default='trained_models/carla_bc')
     parser.add_argument('--max_to_keep', help='number of models to save', default=50, type=int)
     parser.add_argument('--logdir', help='log directory', default='carla_log/train/bc')
-    parser.add_argument('--iteration', default=int(1e6), type=int)
+    parser.add_argument('--iteration', default=int(2*1e5), type=int)
     parser.add_argument('--interval', help='save interval', default=int(5*1e2), type=int)
     parser.add_argument('--minibatch_size', default=128, type=int)
     parser.add_argument('--epoch_num', default=50, type=int)
     return parser.parse_args()
 
 
-class Env():
-    def __init__(self):
-        self.observation_space = (21, )
-        self.action_space = 2
-
-
 def main(args):
-    env = Env()
-    Policy = Policy_net('policy', env)
+    Policy = Policy_net('policy')
     BC = BehavioralCloning(Policy)
     saver = tf.train.Saver(max_to_keep=args.max_to_keep)
 
-    # observations = np.genfromtxt('trajectory/observations.csv')
     observations = np.genfromtxt('expert_traj/observations.csv')
     observations = normalize(observations, axis=1, norm='l1')
-    # actions = np.genfromtxt('trajectory/actions.csv', dtype=np.int32)
     actions = np.genfromtxt('expert_traj/actions.csv', dtype=np.int32)
-    actions = actions[:, 0]
+    actions_copy = np.copy(actions)
+    aa = np.zeros(len(actions_copy))
+    bb = actions[:, 1] == 1.
+    cc = actions[:, 3] == 1.
+    aa[bb] = 1.
+    aa[cc] = 2.
 
     with tf.Session(config=tf.ConfigProto(allow_soft_placement=True, log_device_placement=False)) as sess:
         writer = tf.summary.FileWriter(args.logdir, sess.graph)
